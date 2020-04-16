@@ -76,9 +76,12 @@ function drawNumbers(){
 
 function drawNumber(number, x, y){
 	ctx.fillStyle = '#333';
+	ctx.font = '20px arial';
+	ctx.fillText(i || 12, x - 7, y + 5);
+	/*
 	ctx.beginPath();
 	ctx.arc(x, y, 5, 0, 2 * Math.PI);
-	ctx.fill();
+	ctx.fill();*/
 }
 
 function drawHandCenter(){
