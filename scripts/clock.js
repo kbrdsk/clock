@@ -1,3 +1,27 @@
+class Hand{
+	constructor(timeFunction, period, length, width, strokeStyle){
+		this.length = length;
+		this.timeFunction = timeFunction;
+		this.period = period;
+		this.strokeStyle = strokeStyle;
+		this.width = width;
+	}
+
+	draw(){
+		let angle = -time[this.timeFunction]()/this.period * 2 * Math.PI + Math.PI / 2;
+		let endPoint = [origin[0] + Math.cos(angle) * this.length,
+						origin[1] - Math.sin(angle) * this.length]
+
+		ctx.strokeStyle = this.strokeStyle;
+		ctx.lineWidth = this.width;
+
+		ctx.beginPath();
+		ctx.moveTo(...origin);
+		ctx.lineTo(...endPoint);
+		ctx.stroke();
+	}
+}
+
 let time = new Date(Date.now());
 
 let canvas = document.getElementById('clock-canvas'),
@@ -5,74 +29,59 @@ let canvas = document.getElementById('clock-canvas'),
 
 let origin = [canvas.width / 2, canvas.height / 2];
 
-let hourHandLength = 90,
-    minuteHandLength = 160,
-    secondHandLength = 190;
-
-let hourHandColor =
-    minuteHandColor = 
-    secondHandColor = '#000';
+let secondHand = new Hand('getSeconds', 60, 190, 1, '#000'),
+	minuteHand = new Hand('getMinutes', 60, 160, 3, '#000'),
+	hourHand = new Hand('getHours', 12, 90, 4, '#000');
 
 let backgroundColor = '#f6f6f6';
 
 setInterval(update, 100);
 
-function drawNumber(number){
+function update(){
+	time = new Date(Date.now());
+	draw();
+}
 
+function draw(){
+	drawBackground();
+	drawNumbers();
+	secondHand.draw();
+	minuteHand.draw();
+	hourHand.draw();
+	drawHandCenter();
+}
+
+function drawBackground(){
+	ctx.rect(0, 0, canvas.width, canvas.height);
+	ctx.fillStyle = backgroundColor;
+	ctx.fill();	
 }    
 
 function drawNumbers(){
+	let radius = 217;
+
+	for(i = 0; i < 12; i++){
+		let angle = -i / 6 * Math.PI + Math.PI / 2; 
+		ctx.fillStyle = '#333';
+		ctx.beginPath();
+		ctx.arc(origin[0] + Math.cos(angle) * radius,
+				origin[1] - Math.sin(angle) * radius,
+				5,
+				0,
+				2 * Math.PI);
+		ctx.fill();
+	}
+}
+
+function drawNumber(number){
 
 }
 
-function drawSecondHand(){
-	let angle = -time.getSeconds()/30 * Math.PI + Math.PI / 2;
-	let radius = secondHandLength;
-	let endPoint = [origin[0] + Math.cos(angle) * radius,
-					origin[1] - Math.sin(angle) * radius]
-
+function drawHandCenter(){
+	ctx.fillStyle = '#ededed';
 	ctx.beginPath();
-	ctx.moveTo(...origin);
-	ctx.lineTo(...endPoint);
-	ctx.strokeStyle = secondHandColor;
-	ctx.stroke();
-}
-
-function drawMinuteHand(){
-	let angle = -time.getMinutes()/30 * Math.PI + Math.PI / 2;
-	let radius = minuteHandLength;
-	let endPoint = [origin[0] + Math.cos(angle) * radius,
-					origin[1] - Math.sin(angle) * radius]
-
-	ctx.beginPath();
-	ctx.moveTo(...origin);
-	ctx.lineTo(...endPoint);
-	ctx.strokeStyle = minuteHandColor;
-	ctx.stroke();
-}
-
-function drawHourHand(){
-	let angle = -time.getHours()/6 * Math.PI + Math.PI / 2;
-	let radius = hourHandLength;
-	let endPoint = [origin[0] + Math.cos(angle) * radius,
-					origin[1] - Math.sin(angle) * radius]
-
-	ctx.beginPath();
-	ctx.moveTo(...origin);
-	ctx.lineTo(...endPoint);
-	ctx.strokeStyle = hourHandColor;
-	ctx.stroke();
-}
-
-function update(){
-	time = new Date(Date.now());
-	ctx.rect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = backgroundColor;
+	ctx.arc(...origin, 12, 0, 2 * Math.PI);
 	ctx.fill();
-
-	drawSecondHand();
-	drawMinuteHand();
-	drawHourHand();
 }
 
 class Timer{
