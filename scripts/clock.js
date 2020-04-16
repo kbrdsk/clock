@@ -8,7 +8,10 @@ class Hand{
 	}
 
 	draw(){
-		let angle = -time[this.timeFunction]()/this.period * 2 * Math.PI + Math.PI / 2;
+		let angle = -time[this.timeFunction]() / this.period 
+					* 2 * Math.PI 
+					+ Math.PI / 2;
+
 		let endPoint = [origin[0] + Math.cos(angle) * this.length,
 						origin[1] - Math.sin(angle) * this.length]
 
@@ -20,6 +23,10 @@ class Hand{
 		ctx.lineTo(...endPoint);
 		ctx.stroke();
 	}
+}
+
+class Timer{
+	//TODO
 }
 
 let time = new Date(Date.now());
@@ -59,31 +66,24 @@ function drawBackground(){
 
 function drawNumbers(){
 	let radius = 217;
-
 	for(i = 0; i < 12; i++){
 		let angle = -i / 6 * Math.PI + Math.PI / 2; 
-		ctx.fillStyle = '#333';
-		ctx.beginPath();
-		ctx.arc(origin[0] + Math.cos(angle) * radius,
-				origin[1] - Math.sin(angle) * radius,
-				5,
-				0,
-				2 * Math.PI);
-		ctx.fill();
+		drawNumber(i,
+				   origin[0] + Math.cos(angle) * radius,
+			       origin[1] - Math.sin(angle) * radius);
 	}
 }
 
-function drawNumber(number){
-
-}
-
-function drawHandCenter(){
-	ctx.fillStyle = '#ededed';
+function drawNumber(number, x, y){
+	ctx.fillStyle = '#333';
 	ctx.beginPath();
-	ctx.arc(...origin, 12, 0, 2 * Math.PI);
+	ctx.arc(x, y, 5, 0, 2 * Math.PI);
 	ctx.fill();
 }
 
-class Timer{
-
+function drawHandCenter(){
+	ctx.fillStyle = '#000';
+	ctx.beginPath();
+	ctx.arc(...origin, 4, 0, 2 * Math.PI);
+	ctx.fill();
 }
