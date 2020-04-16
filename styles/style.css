@@ -1,0 +1,15 @@
+body{
+	display: flex;
+	min-height: 100vh;
+	min-width: 100vw;
+	justify-content: center;
+	align-items: center;
+}
+
+#clock-canvas{
+	background-color: #f6f6f6;
+	border-radius: 50%;
+	border-width: 60px;
+	border: solid;
+	border-color: #444;
+}
